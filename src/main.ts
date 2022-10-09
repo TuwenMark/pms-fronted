@@ -24,6 +24,7 @@ import {
     RadioGroup,
     Radio,
     Picker,
+    Popup,
 } from 'vant';
 import * as VueRouter from 'vue-router';
 import routes from "./config/routes";
@@ -53,6 +54,7 @@ app.use(DatetimePicker);
 app.use(RadioGroup);
 app.use(Radio);
 app.use(Picker);
+app.use(Popup);
 
 
 // 3. 创建路由实例并传递 `routes` 配置

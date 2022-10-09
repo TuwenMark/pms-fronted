@@ -70,9 +70,6 @@
         </van-button>
       </div>
     </van-form>
-    {{
-      teamData
-    }}
   </div>
 </template>
 
@@ -99,8 +96,8 @@ const teamData = ref({...initTeamData});
 
 // 过期时间格式化处理函数，返回格式化后的日期
 const timeFormatter = (originTime) => {
-  let seperator1 = "-";
-  let seperator2 = ":";
+  let separator1 = "-";
+  let separator2 = ":";
   let months = originTime.getMonth() + 1;
   let days = originTime.getDate();
   let hours = originTime.getHours();
@@ -117,19 +114,17 @@ const timeFormatter = (originTime) => {
   if (minutes >= 0 && minutes <= 9) {
     minutes = "0" + minutes;
   }
-  let formattedTime =
-      originTime.getFullYear() +
-      seperator1 +
+  return originTime.getFullYear() +
+      separator1 +
       months +
-      seperator1 +
+      separator1 +
       days +
       " " +
       hours +
-      seperator2 +
+      separator2 +
       minutes +
-      seperator2 +
+      separator2 +
       "00";
-  return formattedTime;
 }
 
 const onSubmit = async () => {
