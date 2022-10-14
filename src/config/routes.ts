@@ -4,6 +4,7 @@
 import Index from "../pages/IndexPage.vue";
 import Team from "../pages/teamPages/TeamPage.vue";
 import TeamCreate from "../pages/teamPages/TeamCreatePage.vue";
+import TeamUpdate from "../pages/teamPages/TeamUpdatePage.vue";
 import User from "../pages/UserPage.vue";
 import Search from "../pages/SearchPage.vue";
 import SearchResult from "../pages/SearchResultPage.vue";
@@ -16,6 +17,7 @@ const routes = [
     { path: '/', component: Index },
     { path: '/team', component: Team },
     { path: '/team/create', component: TeamCreate },
+    { path: '/team/update', component: TeamUpdate },
     { path: '/user', component: User },
     { path: '/search', component: Search },
     { path: '/user/list', component: SearchResult },

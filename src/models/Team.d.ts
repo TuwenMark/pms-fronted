@@ -5,6 +5,7 @@ export type TeamType = {
     teamId: number;
     name?: string;
     description: string;
+    leaderId: number;
     maxNum: number;
     currentNum: number;
     expireTime: Date;
