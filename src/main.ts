@@ -25,6 +25,8 @@ import {
     Radio,
     Picker,
     Popup,
+    Tab,
+    Tabs,
 } from 'vant';
 import * as VueRouter from 'vue-router';
 import routes from "./config/routes";
@@ -55,6 +57,8 @@ app.use(RadioGroup);
 app.use(Radio);
 app.use(Picker);
 app.use(Popup);
+app.use(Tab);
+app.use(Tabs);
 
 
 // 3. 创建路由实例并传递 `routes` 配置

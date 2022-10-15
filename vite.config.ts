@@ -15,5 +15,12 @@ export default defineConfig({
         }
       ]
     }),
-  ]
+  ],
+  // vue3-vite热更新，解决笔记本热更新失效问题
+  server: {
+    host: 'localhost',
+    cors: true,
+    open: true,
+    hmr: true,
+  },
 })
