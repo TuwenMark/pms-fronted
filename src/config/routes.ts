@@ -19,7 +19,7 @@ const routes = [
     { path: '/team/create', component: TeamCreate },
     { path: '/team/update', component: TeamUpdate },
     { path: '/user', component: User },
-    { path: '/search', component: Search },
+    { path: '/index/search', component: Search },
     { path: '/user/list', component: SearchResult },
     { path: '/user/edit', component: Edit },
     { path: '/user/login', component: Login },
