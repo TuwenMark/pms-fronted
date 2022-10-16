@@ -10,6 +10,8 @@ myAxios.interceptors.request.use(function (config) {
     // 获取浏览器中存储的token
     let token = sessionStorage.getItem('token');
     myAxios.defaults.withCredentials = true;
+    // 请求头增加Access-Control-Allow-Origin字段，避免跨域问题
+    // config.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173';
     // 如果token存在，添加Authorization请求头
     if (token) {
         config.headers['Authorization'] = token;

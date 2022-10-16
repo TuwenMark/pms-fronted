@@ -1,29 +1,37 @@
 <template>
-  <van-nav-bar
-      title="主页"
-      left-arrow
-      @click-left="onClickLeft"
-      @click-right="onClickRight"
-      v-if="active==='index'"
-  >
-    <template #right>
-      <van-icon name="search" size="18" />
-    </template>
-  </van-nav-bar>
+  <van-sticky :offset-top="0">
+    <van-nav-bar
+        title="主页"
+        left-arrow
+        @click-left="onClickIndexLeft"
+        @click-right="onClickIndexRight"
+        v-if="active==='index'"
+    >
+      <template #right>
+        <van-icon name="search" size="18"/>
+      </template>
+    </van-nav-bar>
 
-<!--  <template v-if="active === 'index'">-->
-<!--    <Index />-->
-<!--  </template>-->
-<!--  <template v-if="active === 'teamPages'">-->
-<!--    <Team />-->
-<!--  </template>-->
+    <van-nav-bar
+        title="队伍"
+        left-arrow
+        @click-left="onClickTeamLeft"
+        @click-right="onClickTeamRight"
+        v-if="active==='team'"
+    >
+      <template #right>
+        <van-icon name="search" size="18"/>
+      </template>
+    </van-nav-bar>
+  </van-sticky>
+
   <div id="content">
-    <router-view />
+    <router-view/>
   </div>
 
 
   <van-tabbar v-model="active" @change="onChange">
-<!--  <van-tabbar route @change="onChange">-->
+    <!--  <van-tabbar route @change="onChange">-->
     <van-tabbar-item to="/" icon="home-o" name="index">主页</van-tabbar-item>
     <van-tabbar-item to="/team" icon="search" name="team">队伍</van-tabbar-item>
     <van-tabbar-item to="/user" icon="friends-o" name="user">我的</van-tabbar-item>
@@ -32,29 +40,44 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
-  import {Toast} from "vant";
-  import Index from "../pages/IndexPage.vue";
-  import Team from "../pages/teamPages/TeamPage.vue";
-  import {useRouter} from "vue-router";
-  import TeamPage from "../pages/teamPages/TeamPage.vue";
+import {ref} from 'vue';
+import {Toast} from "vant";
+import {useRouter} from "vue-router";
 
-  const router = useRouter()
+const router = useRouter()
 
-  const onClickLeft = () => {
-    router.back()
-  };
-  const onClickRight = () => {
-    router.push('/index/search')
-  };
+/**
+ * 主页左上角返回
+ */
+const onClickIndexLeft = () => {
+  router.back();
+};
+/**
+ * 主页右上角搜索
+ */
+const onClickIndexRight = () => {
+  router.push('/index/search');
+};
 
-  const active = ref("index");
-  const onChange = (index) => Toast(`标签 ${index}`);
+/**
+ * 队伍页面左上角返回
+ */
+const onClickTeamLeft = () => {
+  router.back();
+}
+/**
+ * 队伍页面右上角搜索
+ */
+const onClickTeamRight = () => {
+  router.push('/team/search');
+}
+const active = ref("index");
+const onChange = (index) => Toast(`标签 ${index}`);
 
 </script>
 
 <style scoped>
-#content{
+#content {
   padding-bottom: 50px;
 }
 </style>

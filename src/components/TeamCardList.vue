@@ -22,9 +22,19 @@
       </template>
 
       <template #footer>
-        <van-button type="primary" size="mini" @click="doJoinTeam(team.teamId)">加入队伍</van-button>
+        <van-button type="primary" size="mini" @click="doJoinTeam(team.teamId)">
+          加入
+        </van-button>
         <van-button v-if="team.leaderId === currentUser.id" type="primary" size="mini"
-                    @click="toUpdatePage(team.teamId)">更新队伍
+                    @click="toUpdatePage(team.teamId)">
+          更新
+        </van-button>
+        <van-button type="primary" size="mini" @click="doQuitTeam(team.teamId)">
+          退出
+        </van-button>
+        <van-button v-if="team.leaderId === currentUser.id" type="primary" size="mini"
+                    @click="doDeleteTeam(team.teamId)">
+          解散
         </van-button>
       </template>
     </van-card>
@@ -75,6 +85,11 @@ const doJoinTeam = async (teamId: number) => {
   }
 }
 
+/**
+ * 跳转到更新页面
+ *
+ * @param id 待更新队伍ID
+ */
 const toUpdatePage = (id: number) => {
   router.push({
     path: "/team/update",
@@ -82,6 +97,45 @@ const toUpdatePage = (id: number) => {
       id,
     }
   })
+}
+
+/**
+ * 退出队伍
+ *
+ * @param id 队伍ID
+ */
+const doQuitTeam = async (id: number) => {
+  const res = await myAxios.get("/team/quit", {
+    params: {
+      teamId: id,
+    }
+  });
+  if (res?.data && res?.code === 20000) {
+    Toast.success("退出队伍成功！");
+    router.push("/team");
+  } else {
+    Toast.fail("退出队伍失败," + (res.description ? res.description : ''));
+  }
+  router.push("/supplier/allBack");
+}
+
+/**
+ * 解散队伍
+ *
+ * @param id 队伍ID
+ */
+const doDeleteTeam = async (id: number) => {
+  const res = await myAxios.delete("/team/delete", {
+    params: {
+      teamId: id,
+    }
+  });
+  if (res.data && res.code === 20000) {
+    Toast.success("解散队伍成功！");
+  } else {
+    Toast.fail("解散队伍失败，" + (res.description ? res.description : ''));
+  }
+  router.push("/supplier/allBack");
 }
 </script>
 

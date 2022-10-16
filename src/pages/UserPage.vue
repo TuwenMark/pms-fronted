@@ -1,4 +1,5 @@
 <template>
+  <div style="padding-top: 20px"/>
   <template v-if="user">
     <van-cell title="昵称" is-link to="/user/edit" :value="user.username"
               @click="toEdit('username', '昵称', user.username)"/>

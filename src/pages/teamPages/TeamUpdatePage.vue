@@ -84,15 +84,13 @@ const router = useRouter();
 const route = useRoute();
 // 展示日期选择器
 const showPicker = ref(false);
-
 const minDate = new Date();
 const teamUpdateData = ref({});
 const id = route.query.id;
+
 onMounted(async () => {
-  console.log(id);
-  console.log(id);
   if (id <= 0) {
-    Toast.fail("加载队伍失败！");
+    Toast.fail("队伍信息加载失败！");
   }
   const res = await myAxios.get("/team/query", {
     params: {
@@ -105,16 +103,22 @@ onMounted(async () => {
   console.log(teamUpdateData);
 })
 
-// 过期时间格式化处理函数，返回格式化后的日期
-const timeFormatter = (originTime: Date) => {
-  let date: Date = new Date(Date.parse(originTime))
+/**
+ * 期时间格式化处理函数，返回格式化后的日期
+ *
+ * @param originTime 格式化前日期
+ */
+const timeFormatter = (originTime: Date | string): string => {
+  if (typeof originTime === "string") {
+    return originTime
+  }
   let separator1 = "-";
   let separator2 = ":";
   type stringOrNumber = (string | number);
-  let months: stringOrNumber = date.getMonth() + 1;
-  let days: stringOrNumber = date.getDate();
-  let hours: stringOrNumber = date.getHours();
-  let minutes: stringOrNumber = date.getMinutes();
+  let months: stringOrNumber = originTime.getMonth() + 1;
+  let days: stringOrNumber = originTime.getDate();
+  let hours: stringOrNumber = originTime.getHours();
+  let minutes: stringOrNumber = originTime.getMinutes();
   if (months >= 1 && months <= 9) {
     months = "0" + months;
   }
@@ -127,7 +131,7 @@ const timeFormatter = (originTime: Date) => {
   if (minutes >= 0 && minutes <= 9) {
     minutes = "0" + minutes;
   }
-  return date.getFullYear() +
+  return originTime.getFullYear() +
       separator1 +
       months +
       separator1 +
@@ -145,10 +149,10 @@ const onSubmit = async () => {
     ...teamUpdateData.value,
     maxNum: Number(teamUpdateData.value.maxNum),
     status: Number(teamUpdateData.value.status),
-    expireTime: timeFormatter(teamUpdateData.value.expireTime)
+    expireTime: timeFormatter(teamUpdateData.value.expireTime),
   }
   // TODO 前端参数校验
-  const res = await myAxios.post("/team/update", postData);
+  const res = await myAxios.put("/team/update", postData);
   console.log(postData);
   if (res.data && res.code === 20000) {
     Toast.success("队伍修改成功！");

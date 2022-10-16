@@ -1,44 +1,47 @@
 <template>
-  <van-nav-bar
-      title="队伍"
-      left-arrow
-      @click-left="onClickLeft"
-      @click-right="onClickRight"
-  >
-    <template #right>
-      <van-icon name="search" size="18"/>
-    </template>
-  </van-nav-bar>
-
-  <van-button type="primary" @click="onCreate">创建队伍</van-button>
-
-  <van-tabs v-model:active="activeName" swipeable>
+  <form action="/">
+    <van-search
+        v-model="searchText"
+        show-action
+        placeholder="请输入搜索的关键词"
+        @search="searchByKeyWords(activeName, searchText)"
+        @cancel="searchTeams(activeName, searchText)"
+    />
+  </form>
+  <van-tabs v-model:active="activeName" swipeable @click-tab="searchByKeyWords(activeName, searchText)">
     <van-tab title="所有队伍" name="all">
       <team-card-list :team-list="teamList"/>
     </van-tab>
-    <van-tab title="我的队伍" name="my" @click="searchMyTeams(id)">
+    <van-tab title="我的队伍" name="my">
       <team-card-list :team-list="myTeamList"/>
     </van-tab>
   </van-tabs>
+  <van-empty v-if="teamList?.length < 1" description="暂无符合条件的队伍"/>
 
-  <van-search v-model="searchText" placeholder="请输入搜索关键词"  @search="onSearch"/>
-  <team-card-list :team-list="teamList"/>
-  <van-empty v-if="teamList?.length < 1" description="暂无符合条件的队伍" />
+  <van-empty mage-size="100" description="已经到底啦~"
+             style="--van-empty-image-size: 0px; --van-empty-padding: 0px; --van-empty-description-font-size:10"
+  />
+
+  <div style="padding-left: 310px">
+    <van-sticky :offset-bottom="70" position="bottom">
+      <van-button icon="plus" round type="primary" to="/team/create"></van-button>
+    </van-sticky>
+  </div>
+
+
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
 import myAxios from "../../plugins/myAxios";
 import {Toast} from "vant";
 import TeamCardList from "../../components/TeamCardList.vue";
-import axios from "axios";
-import {getCurrentUser} from "../../services/user.ts";
 
 const router = useRouter();
-const onCreate = () => {
-  router.push("/team/create");
-}
+const teamList = ref([]);
+const myTeamList = ref([]);
+const searchText = ref("");
 
 /**
  * 点击左上角返回
@@ -55,20 +58,11 @@ const onClickRight = () => {
   Toast("搜索")
 }
 
-const id = ref("");
-const teamList = ref([]);
-const myTeamList = ref([]);
-const searchText = ref("");
-
-onMounted( async () => {
-  const res = await myAxios.get("/team/list")
-  const user = await getCurrentUser();
-  id.value = user.id;
-const listTeam = async (val = '') => {
+const listTeams = async (keyWords: string) => {
   const res = await myAxios.get("/team/list", {
-    params:{
-      keyWords: val,
-    },
+    params: {
+      keyWords: keyWords,
+    }
   });
   if (res.data && res.code === 20000) {
     teamList.value = res.data;
@@ -76,27 +70,31 @@ const listTeam = async (val = '') => {
     Toast.fail("队伍加载失败，请稍后重试！");
   }
 }
-onMounted( () => {
-  listTeam();
-})
 
-const searchMyTeams = async (id) => {
-  const res = await axios.get("/team/myList", {
-    params: {
-      id,
-    }
-  })
-  if (res.data && res.code===20000) {
-    myTeamList.value = res.data;
-  } else {
-    Toast.fail("队伍加载失败，请稍后重试！")
-  }
-}
+onMounted(() => {
+  // user.value = await getCurrentUser();
+  listTeams("");
+})
 
 const activeName = ref('all');
 
-const onSearch = (val) => {
-  listTeam(val);
+const searchByKeyWords = async (activeName: string, searchText: string) => {
+  if (activeName === 'all') {
+    listTeams(searchText);
+  } else {
+    const res = await myAxios.get("/team/list/my", {
+      params: {
+        keyWords: searchText,
+      }
+    })
+    if (res.data && res.code === 20000) {
+      myTeamList.value = res.data;
+    }
+  }
+}
+
+const searchTeams = (activeName: string, searchText: string) => {
+  searchByKeyWords(activeName, searchText);
 }
 </script>
 

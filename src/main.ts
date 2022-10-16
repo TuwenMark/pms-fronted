@@ -1,32 +1,33 @@
 import {createApp} from 'vue'
 import App from './App.vue'
 import {
-    Button,
-    Icon,
-    NavBar,
-    Tabbar,
-    TabbarItem,
-    Search,
-    Divider,
-    Tag,
-    TreeSelect,
-    Col,
-    Row,
-    Cell,
-    CellGroup,
-    Form,
-    Field,
-    Card,
-    Toast,
-    Empty,
-    Stepper,
-    DatetimePicker,
-    RadioGroup,
-    Radio,
-    Picker,
-    Popup,
-    Tab,
-    Tabs,
+	Button,
+	Card,
+	Cell,
+	CellGroup,
+	Col,
+	DatetimePicker,
+	Divider,
+	Empty,
+	Field,
+	Form,
+	Icon,
+	NavBar,
+	Picker,
+	Popup,
+	Radio,
+	RadioGroup,
+	Row,
+	Search,
+	Stepper,
+	Sticky,
+	Tab,
+	Tabbar,
+	TabbarItem,
+	Tabs,
+	Tag,
+	Toast,
+	TreeSelect,
 } from 'vant';
 import * as VueRouter from 'vue-router';
 import routes from "./config/routes";
@@ -59,15 +60,16 @@ app.use(Picker);
 app.use(Popup);
 app.use(Tab);
 app.use(Tabs);
+app.use(Sticky);
 
 
 // 3. 创建路由实例并传递 `routes` 配置
 // 你可以在这里输入更多的配置，但我们在这里
 // 暂时保持简单
 const router = VueRouter.createRouter({
-    // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
-    history: VueRouter.createWebHashHistory(),
-    routes, // `routes: routes` 的缩写
+	// 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
+	history: VueRouter.createWebHashHistory(),
+	routes, // `routes: routes` 的缩写
 })
 app.use(router)
 app.mount('#app')

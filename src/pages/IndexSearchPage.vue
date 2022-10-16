@@ -42,7 +42,6 @@
 
 <script setup>
 import {ref} from 'vue';
-import {Toast} from 'vant';
 import {useRouter} from "vue-router";
 
 const searchText = ref('');
