@@ -16,20 +16,15 @@ const userList = ref([]);
 const {tags} = route.query;
 
 onMounted(async () => {
-  const userListData = await myAxios.get('/user/recommend', {
-    params: {
-      pageNum: 1,
-      pageSize: 5,
-    },
-  })
+  const userListData = await myAxios.get('/user/match')
       .then(function (response) {
-        console.log('/user/recommend succeed', response);
+        console.log('/user/match succeed', response);
         Toast.success('请求成功！')
         console.log(response)
         return response?.data;
       })
       .catch(function (error) {
-        console.log('/user/recommend error', error);
+        console.log('/user/match error', error);
         Toast.fail('请求失败！')
       })
   // 相当于finally，一定会执行

@@ -1,4 +1,5 @@
 <template>
+  <div style="padding-top: 20px"/>
   <van-form @submit="onSubmit">
       <van-field
           v-model="editUser.currentValue"

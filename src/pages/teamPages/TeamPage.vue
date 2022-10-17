@@ -18,7 +18,7 @@
   </van-tabs>
   <van-empty v-if="teamList?.length < 1" description="暂无符合条件的队伍"/>
 
-  <van-empty mage-size="100" description="已经到底啦~"
+  <van-empty v-if="teamList?.length>0 || myTeamList.length>0" mage-size="100" description="已经到底啦~"
              style="--van-empty-image-size: 0px; --van-empty-padding: 0px; --van-empty-description-font-size:10"
   />
 
@@ -59,10 +59,8 @@ const onClickRight = () => {
 }
 
 const listTeams = async (keyWords: string) => {
-  const res = await myAxios.get("/team/list", {
-    params: {
-      keyWords: keyWords,
-    }
+  const res = await myAxios.post("/team/list", {
+    keyWords:keyWords,
   });
   if (res.data && res.code === 20000) {
     teamList.value = res.data;
